@@ -1,0 +1,19 @@
+DeterministicKey dk01 = DeterministicKey.deserializeB58(xprv, params);
+String privhex = dk01.getPrivateKeyAsHex();
+DeterministicHierarchy dh = new DeterministicHierarchy(dk01);
+List<ChildNumber> chns = ImmutableList.of(new ChildNumber(ChildNumber.HARDENED_BIT), new ChildNumber(0, false));
+DeterministicKey dk03 = dh.deriveChild(chns, false, true, new ChildNumber(0, false));
+Log.d(LOG_TAG, "m/0'/0=" + dk03.getPrivateKeyAsWiF(params) + " privkey=" + dk03.getPrivateKeyAsHex());
+byte[] phx = Utils.HEX.decode(dk03.getPrivateKeyAsHex());
+BigInteger bi = new BigInteger(phx);
+ECKey preck = ECKey.fromPrivate(phx);
+Wallet wallet = new Wallet(params);
+wallet.importKey(preck);
+String wfa = wallet.getImportedKeys().get(0).toAddress(params).toString();
+Log.d(LOG_TAG, "wfa=" + wfa);
+
+
+xprv9s21ZrQH143K4HMYKbaqLqi3GXyJrjkHGRPkszp3BgfVdXGv8CwYhv9NytDw1WHa4XH2EG4fULtMXKzmHyV1SBnNGyjQrT8Fitb2yfrUVC9
+
+
+  
